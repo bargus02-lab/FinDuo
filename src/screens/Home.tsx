@@ -35,24 +35,23 @@ function ParallaxBackdrop() {
   )
 }
 
-export function Home() {
+interface HomeProps {
+  onStartLesson: (lessonId: string) => void
+}
+
+export function Home({ onStartLesson }: HomeProps) {
   const xp = useGameStore((s) => s.xp)
   const streak = useGameStore((s) => s.streak)
   const currentTrack = useGameStore((s) => s.currentTrack)
   const setTrack = useGameStore((s) => s.setTrack)
   const completed = useGameStore((s) => s.completedLessons)
-  const completeLesson = useGameStore((s) => s.completeLesson)
 
   const [selected, setSelected] = useState<Lesson | null>(null)
   const lessons = lessonsForTrack(currentTrack)
 
   const handleStart = () => {
     if (!selected) return
-    // Placeholder: until step 6 ships the actual lesson screen, "Start"
-    // marks the lesson complete so the path progression is testable.
-    if (!completed[selected.id]) {
-      completeLesson(selected.id, selected.xp)
-    }
+    onStartLesson(selected.id)
     setSelected(null)
   }
 
@@ -104,7 +103,7 @@ export function Home() {
         <LessonPath lessons={lessons} onLessonTap={setSelected} />
 
         <p className="text-xs text-ink/40 mt-12 text-center">
-          Step 5 of 12 · learning tree (lesson screens land in step 6)
+          Step 6 of 12 · multiple choice with full answer-feedback animations
         </p>
       </PageShell>
 
