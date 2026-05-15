@@ -151,7 +151,7 @@ export function PortfolioBuilder({ onFinish }: PortfolioBuilderProps) {
       {phase === 'picking' && (
         <>
           <div>
-            <div className="text-xs uppercase tracking-wider font-bold text-ink/50 mb-2">
+            <div className="text-xs uppercase tracking-wider font-bold text-fg/50 mb-2">
               Pick 3 assets · {picked.length}/3
             </div>
             <div className="grid grid-cols-2 gap-2.5">
@@ -166,7 +166,7 @@ export function PortfolioBuilder({ onFinish }: PortfolioBuilderProps) {
                     className={`relative text-left p-3 rounded-2xl border-2 transition-colors ${
                       isPicked
                         ? 'border-primary bg-primary/5'
-                        : 'border-ink/10 bg-white hover:border-ink/30'
+                        : 'border-line/10 bg-card hover:border-line/30'
                     }`}
                   >
                     {isPicked && (
@@ -176,8 +176,8 @@ export function PortfolioBuilder({ onFinish }: PortfolioBuilderProps) {
                     )}
                     <div className="text-2xl mb-1">{a.emoji}</div>
                     <div className="font-extrabold text-sm">{a.name}</div>
-                    <div className="text-[11px] text-ink/50 mb-2">{a.blurb}</div>
-                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider text-ink/40">
+                    <div className="text-[11px] text-fg/50 mb-2">{a.blurb}</div>
+                    <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider text-fg/40">
                       <span>Ret {(a.expectedReturn * 100).toFixed(0)}%</span>
                       <span>Vol {(a.volatility * 100).toFixed(0)}%</span>
                     </div>
@@ -200,8 +200,8 @@ export function PortfolioBuilder({ onFinish }: PortfolioBuilderProps) {
       {(phase === 'running' || phase === 'done') && (
         <>
           <ValueChart path={path} step={step} />
-          <div className="bg-white rounded-2xl p-5 border-b-2 border-black/5 text-center">
-            <div className="text-xs uppercase tracking-wider font-bold text-ink/50 mb-1">
+          <div className="bg-card rounded-2xl p-5 border-b-2 border-line/5 text-center">
+            <div className="text-xs uppercase tracking-wider font-bold text-fg/50 mb-1">
               {phase === 'running' ? 'Month' : 'Final'}{' '}
               {phase === 'running' ? `${step}/${MONTHS}` : ''}
             </div>
@@ -263,7 +263,7 @@ function ValueChart({ path, step }: ValueChartProps) {
       : H / 2
 
   return (
-    <div className="bg-white rounded-2xl p-3 border-b-2 border-black/5">
+    <div className="bg-card rounded-2xl p-3 border-b-2 border-line/5">
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="w-full"

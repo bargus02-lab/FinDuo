@@ -29,8 +29,8 @@ const stateStyles: Record<
     ring: '',
   },
   locked: {
-    bg: 'bg-ink/10 dark:bg-white/10',
-    text: 'text-ink/30 dark:text-white/30',
+    bg: 'bg-fg/10',
+    text: 'text-fg/30',
     shadow: 'rgba(15,23,41,0.10)',
     ring: '',
   },
@@ -102,7 +102,7 @@ export function LessonNode({ lesson, state, onClick }: LessonNodeProps) {
       <div
         className={cn(
           'text-center text-[11px] font-bold tracking-wide uppercase max-w-[120px] leading-tight',
-          state === 'locked' ? 'text-ink/30' : 'text-ink/60',
+          state === 'locked' ? 'text-fg/30' : 'text-fg/60',
         )}
       >
         {lesson.title}

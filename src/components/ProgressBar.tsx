@@ -11,7 +11,7 @@ export function ProgressBar({ progress, className }: ProgressBarProps) {
   return (
     <div
       className={cn(
-        'h-3 rounded-full bg-ink/10 overflow-hidden relative',
+        'h-3 rounded-full bg-fg/10 overflow-hidden relative',
         className,
       )}
       role="progressbar"
@@ -25,7 +25,7 @@ export function ProgressBar({ progress, className }: ProgressBarProps) {
         animate={{ width: `${pct}%` }}
         transition={{ type: 'spring', stiffness: 160, damping: 28 }}
       >
-        <span className="absolute inset-x-0 top-0.5 h-1 bg-white/30 rounded-full" />
+        <span className="absolute inset-x-0 top-0.5 h-1 bg-card/30 rounded-full" />
       </motion.div>
     </div>
   )

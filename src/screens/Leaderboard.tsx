@@ -6,7 +6,7 @@ import { fadeUp, staggerChildren } from '../lib/animations'
 import { useGameStore } from '../store/useGameStore'
 
 const RANK_ICON = [Crown, Medal, Trophy] as const
-const RANK_COLOR = ['text-xp', 'text-ink/50', 'text-[#CD7F32]'] as const
+const RANK_COLOR = ['text-xp', 'text-fg/50', 'text-[#CD7F32]'] as const
 
 export function Leaderboard() {
   const xp = useGameStore((s) => s.xp)
@@ -25,7 +25,7 @@ export function Leaderboard() {
           <Trophy size={28} strokeWidth={2.5} />
         </div>
         <h1 className="text-2xl font-extrabold tracking-tight">Leaderboard</h1>
-        <p className="text-ink/50 text-xs">
+        <p className="text-fg/50 text-xs">
           You’re ranked #{userRank} this week
         </p>
       </motion.header>
@@ -40,7 +40,7 @@ export function Leaderboard() {
           const rank = i + 1
           const isPodium = rank <= 3
           const RankIcon = isPodium ? RANK_ICON[rank - 1] : null
-          const rankColor = isPodium ? RANK_COLOR[rank - 1] : 'text-ink/40'
+          const rankColor = isPodium ? RANK_COLOR[rank - 1] : 'text-fg/40'
 
           return (
             <motion.li
@@ -49,7 +49,7 @@ export function Leaderboard() {
               className={`flex items-center gap-3 rounded-2xl p-3 border-b-2 ${
                 entry.isUser
                   ? 'bg-primary/10 border-primary/30 ring-2 ring-primary/20'
-                  : 'bg-white border-black/5'
+                  : 'bg-card border-line/5'
               }`}
             >
               <div className="w-8 flex items-center justify-center">
@@ -67,7 +67,7 @@ export function Leaderboard() {
                   </span>
                 )}
               </div>
-              <div className="w-10 h-10 rounded-xl bg-ink/5 flex items-center justify-center text-xl">
+              <div className="w-10 h-10 rounded-xl bg-fg/5 flex items-center justify-center text-xl">
                 {entry.avatar}
               </div>
               <div className="flex-1 min-w-0">
@@ -79,7 +79,7 @@ export function Leaderboard() {
                     </span>
                   )}
                 </div>
-                <div className="text-[11px] text-ink/50">
+                <div className="text-[11px] text-fg/50">
                   {rank === 1
                     ? 'Top of the board'
                     : `${entries[0].xp - entry.xp} XP behind 1st`}
@@ -89,7 +89,7 @@ export function Leaderboard() {
                 <div className="font-extrabold tabular-nums">
                   {entry.xp.toLocaleString()}
                 </div>
-                <div className="text-[10px] uppercase tracking-wider font-bold text-ink/40">
+                <div className="text-[10px] uppercase tracking-wider font-bold text-fg/40">
                   XP
                 </div>
               </div>
@@ -98,7 +98,7 @@ export function Leaderboard() {
         })}
       </motion.ol>
 
-      <p className="text-center text-[11px] text-ink/30 mt-6 italic">
+      <p className="text-center text-[11px] text-fg/30 mt-6 italic">
         Competitors are simulated friends — for now.
       </p>
     </PageShell>

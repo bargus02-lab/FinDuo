@@ -3,6 +3,38 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --canvas: 255 251 245;
+    --card: 255 255 255;
+    --fg: 15 23 41;
+    --line: 0 0 0;
+    color-scheme: light;
+  }
+
+  :root.theme-dark {
+    --canvas: 15 23 41;
+    --card: 27 38 64;
+    --fg: 250 247 240;
+    --line: 255 255 255;
+    color-scheme: dark;
+  }
+
+  :root.theme-sunset {
+    --canvas: 30 16 46;
+    --card: 50 28 70;
+    --fg: 250 215 165;
+    --line: 255 200 150;
+    color-scheme: dark;
+  }
+
+  :root.theme-terminal {
+    --canvas: 10 26 10;
+    --card: 22 38 22;
+    --fg: 130 255 170;
+    --line: 130 255 170;
+    color-scheme: dark;
+  }
+
   html,
   body,
   #root {
@@ -10,14 +42,10 @@
   }
 
   body {
-    @apply font-sans bg-cream text-ink antialiased;
+    @apply font-sans bg-canvas text-fg antialiased;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  .dark body {
-    @apply bg-ink text-cream;
   }
 }

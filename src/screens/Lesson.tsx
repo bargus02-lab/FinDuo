@@ -11,6 +11,7 @@ import { PageShell } from '../components/PageShell'
 import { ProgressBar } from '../components/ProgressBar'
 import type { Lesson } from '../data/lessons'
 import { fadeUp } from '../lib/animations'
+import { sound } from '../lib/sound'
 import { useGameStore } from '../store/useGameStore'
 
 const CORRECT_KUDOS = ['Nice!', 'You got it!', 'Sharp!', 'Yes!', 'Got it!']
@@ -51,7 +52,7 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
     return (
       <PageShell>
         <div className="text-center py-20">
-          <p className="text-ink/60 mb-4">This lesson has no questions yet.</p>
+          <p className="text-fg/60 mb-4">This lesson has no questions yet.</p>
           <Button onClick={onExit} variant="secondary">
             Back
           </Button>
@@ -64,7 +65,12 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
     if (selected === null || resolved) return
     const isCorrect = selected === question.correctIndex
     setResolved(isCorrect ? 'correct' : 'wrong')
-    if (isCorrect) setScore((s) => s + 1)
+    if (isCorrect) {
+      setScore((s) => s + 1)
+      sound.correct()
+    } else {
+      sound.wrong()
+    }
   }
 
   const handleContinue = () => {
@@ -78,6 +84,7 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
       })
       state.completeLesson(lesson.id, lesson.xp)
       setPhase('complete')
+      sound.complete()
       return
     }
     setIndex((i) => i + 1)
@@ -113,7 +120,7 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
         <button
           onClick={onExit}
           aria-label="Exit lesson"
-          className="w-9 h-9 rounded-xl bg-white border border-ink/10 flex items-center justify-center text-ink/50 hover:text-ink hover:border-ink/30 transition-colors"
+          className="w-9 h-9 rounded-xl bg-card border border-line/10 flex items-center justify-center text-fg/50 hover:text-fg hover:border-line/30 transition-colors"
         >
           <X size={18} strokeWidth={3} />
         </button>
@@ -127,7 +134,7 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
           initial="initial"
           animate="in"
         >
-          <div className="text-[11px] uppercase tracking-wider font-bold text-ink/40 mb-2 mt-2">
+          <div className="text-[11px] uppercase tracking-wider font-bold text-fg/40 mb-2 mt-2">
             Question {index + 1} of {total}
           </div>
           <h1 className="text-xl font-extrabold tracking-tight leading-snug mb-6">
@@ -164,7 +171,7 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-full bg-card/20 flex items-center justify-center">
                 {resolved === 'correct' ? (
                   <Check size={20} strokeWidth={3.5} />
                 ) : (
@@ -198,7 +205,7 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 80, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-0 inset-x-0 z-30 max-w-md mx-auto px-5 pt-4 pb-6 bg-gradient-to-t from-cream via-cream to-transparent"
+            className="fixed bottom-0 inset-x-0 z-30 max-w-md mx-auto px-5 pt-4 pb-6 bg-gradient-to-t from-canvas via-canvas to-transparent"
           >
             <Button
               variant="primary"

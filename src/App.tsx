@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { BottomNav, type Tab } from './components/BottomNav'
+import { ThemeEffect } from './components/ThemeEffect'
 import { getLessonById } from './data/lessons'
 import { DailyChallengeScreen } from './screens/DailyChallenge'
 import { Home } from './screens/Home'
@@ -19,6 +20,30 @@ function App() {
   const [full, setFull] = useState<FullScreenRoute>(null)
 
   const goBack = () => setFull(null)
+
+  return (
+    <>
+      <ThemeEffect />
+      <AppBody
+        tab={tab}
+        setTab={setTab}
+        full={full}
+        setFull={setFull}
+        goBack={goBack}
+      />
+    </>
+  )
+}
+
+interface AppBodyProps {
+  tab: Tab
+  setTab: (t: Tab) => void
+  full: FullScreenRoute
+  setFull: (f: FullScreenRoute) => void
+  goBack: () => void
+}
+
+function AppBody({ tab, setTab, full, setFull, goBack }: AppBodyProps) {
 
   if (full?.kind === 'daily') {
     return <DailyChallengeScreen onComplete={goBack} onExit={goBack} />

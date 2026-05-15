@@ -25,7 +25,7 @@ const TABS: TabDef[] = [
 export function BottomNav({ active, onChange }: BottomNavProps) {
   return (
     <nav className="fixed bottom-0 inset-x-0 z-30 max-w-md mx-auto px-3 pb-3 pt-2 pointer-events-none">
-      <div className="pointer-events-auto bg-white rounded-2xl border border-ink/10 shadow-lg flex">
+      <div className="pointer-events-auto bg-card rounded-2xl border border-line/10 shadow-lg flex">
         {TABS.map((t) => {
           const isActive = t.id === active
           return (
@@ -49,13 +49,13 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
                   strokeWidth={2.5}
                   className={cn(
                     'relative',
-                    isActive ? 'text-primary' : 'text-ink/50',
+                    isActive ? 'text-primary' : 'text-fg/50',
                   )}
                 />
                 <span
                   className={cn(
                     'relative text-[10px] font-extrabold uppercase tracking-wider',
-                    isActive ? 'text-primary' : 'text-ink/50',
+                    isActive ? 'text-primary' : 'text-fg/50',
                   )}
                 >
                   {t.label}

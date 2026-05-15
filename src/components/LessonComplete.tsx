@@ -63,15 +63,15 @@ export function LessonComplete({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
-        className="text-ink/60 text-sm mb-8 text-center"
+        className="text-fg/60 text-sm mb-8 text-center"
       >
         {snapshot.score !== undefined && snapshot.total !== undefined ? (
           <>
             {snapshot.score}/{snapshot.total} correct on{' '}
-            <span className="font-semibold text-ink">{title}</span>
+            <span className="font-semibold text-fg">{title}</span>
           </>
         ) : (
-          <span className="font-semibold text-ink">{title}</span>
+          <span className="font-semibold text-fg">{title}</span>
         )}
       </motion.p>
 
@@ -81,7 +81,7 @@ export function LessonComplete({
         transition={{ delay: 0.55, duration: 0.4 }}
         className="grid grid-cols-2 gap-3 w-full mb-10"
       >
-        <div className="bg-white rounded-2xl p-4 border-b-2 border-black/5 text-center">
+        <div className="bg-card rounded-2xl p-4 border-b-2 border-line/5 text-center">
           <Zap className="w-5 h-5 mx-auto mb-1 text-primary" strokeWidth={2.5} />
           <div className="text-2xl font-extrabold tabular-nums text-primary">
             <AnimatedNumber
@@ -91,14 +91,14 @@ export function LessonComplete({
               duration={1.1}
             />
           </div>
-          <div className="text-[10px] uppercase tracking-wider font-bold text-ink/50">
+          <div className="text-[10px] uppercase tracking-wider font-bold text-fg/50">
             Total XP
           </div>
         </div>
         <div
           className={cn(
             'rounded-2xl p-4 border-b-2 text-center relative overflow-hidden',
-            streakBumped ? 'bg-xp/15 border-xp/30' : 'bg-white border-black/5',
+            streakBumped ? 'bg-xp/15 border-xp/30' : 'bg-card border-line/5',
           )}
         >
           {streakBumped && (
@@ -125,7 +125,7 @@ export function LessonComplete({
               duration={0.8}
             />
           </div>
-          <div className="text-[10px] uppercase tracking-wider font-bold text-ink/50 relative">
+          <div className="text-[10px] uppercase tracking-wider font-bold text-fg/50 relative">
             Day streak
           </div>
         </div>

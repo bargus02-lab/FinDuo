@@ -34,7 +34,7 @@ export function DailyChallengeCard({ onStart }: DailyChallengeCardProps) {
           <div className="text-sm font-extrabold leading-tight">
             Daily challenge done
           </div>
-          <div className="text-[11px] text-ink/60 flex items-center gap-1">
+          <div className="text-[11px] text-fg/60 flex items-center gap-1">
             <Clock size={11} strokeWidth={2.5} />
             Resets in {formatTimeRemaining(remaining)}
           </div>
@@ -53,7 +53,7 @@ export function DailyChallengeCard({ onStart }: DailyChallengeCardProps) {
       className="w-full text-left rounded-2xl p-3 bg-gradient-to-br from-primary to-[#46A302] text-white border-b-2 border-[#3A8902]"
     >
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-xl bg-card/15 flex items-center justify-center">
           <Calendar size={20} strokeWidth={2.5} />
         </div>
         <div className="flex-1 min-w-0">
@@ -67,7 +67,7 @@ export function DailyChallengeCard({ onStart }: DailyChallengeCardProps) {
             One question · +20 XP
           </div>
         </div>
-        <div className="text-[11px] font-bold bg-white/15 rounded-lg px-2 py-1 flex items-center gap-1">
+        <div className="text-[11px] font-bold bg-card/15 rounded-lg px-2 py-1 flex items-center gap-1">
           <Clock size={10} strokeWidth={3} />
           {formatTimeRemaining(remaining)}
         </div>

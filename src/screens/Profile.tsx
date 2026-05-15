@@ -1,11 +1,43 @@
 import { motion } from 'framer-motion'
-import { Lock, RotateCcw, User as UserIcon } from 'lucide-react'
+import {
+  Check,
+  Lock,
+  RotateCcw,
+  User as UserIcon,
+  Volume2,
+  VolumeX,
+} from 'lucide-react'
 import { useState } from 'react'
 import { Card } from '../components/Card'
 import { PageShell } from '../components/PageShell'
 import { ACHIEVEMENTS } from '../data/achievements'
 import { fadeUp, staggerChildren } from '../lib/animations'
-import { useCompletedCount, useGameStore } from '../store/useGameStore'
+import {
+  useCompletedCount,
+  useGameStore,
+  type Theme,
+} from '../store/useGameStore'
+
+interface ThemeOption {
+  id: Theme
+  name: string
+  preview: string
+}
+
+const THEMES: ThemeOption[] = [
+  { id: 'light', name: 'Light', preview: 'bg-[#FFFBF5] border-black/10' },
+  { id: 'dark', name: 'Dark', preview: 'bg-[#0F1729] border-white/10' },
+  {
+    id: 'sunset',
+    name: 'Sunset',
+    preview: 'bg-gradient-to-br from-[#1E102E] via-[#3B1C5A] to-[#FF7E5E] border-white/10',
+  },
+  {
+    id: 'terminal',
+    name: 'Terminal',
+    preview: 'bg-[#0A1A0A] border-[#64FF96]',
+  },
+]
 
 export function Profile() {
   const xp = useGameStore((s) => s.xp)
@@ -14,6 +46,10 @@ export function Profile() {
   const dailyChallengeLastDate = useGameStore(
     (s) => s.dailyChallengeLastDate,
   )
+  const theme = useGameStore((s) => s.theme)
+  const soundEnabled = useGameStore((s) => s.soundEnabled)
+  const setTheme = useGameStore((s) => s.setTheme)
+  const toggleSound = useGameStore((s) => s.toggleSound)
   const reset = useGameStore((s) => s.resetProgress)
   const lessonCount = useCompletedCount()
 
@@ -40,7 +76,7 @@ export function Profile() {
           <UserIcon size={36} strokeWidth={2.5} />
         </div>
         <h1 className="text-2xl font-extrabold tracking-tight">You</h1>
-        <p className="text-ink/50 text-xs">Member since today</p>
+        <p className="text-fg/50 text-xs">Member since today</p>
       </motion.header>
 
       <motion.section
@@ -61,7 +97,7 @@ export function Profile() {
               >
                 {s.value}
               </div>
-              <div className="text-[10px] uppercase tracking-wider font-bold text-ink/50">
+              <div className="text-[10px] uppercase tracking-wider font-bold text-fg/50">
                 {s.label}
               </div>
             </Card>
@@ -74,7 +110,7 @@ export function Profile() {
           <h2 className="text-sm font-extrabold tracking-tight uppercase">
             Achievements
           </h2>
-          <span className="text-xs font-bold text-ink/40 tabular-nums">
+          <span className="text-xs font-bold text-fg/40 tabular-nums">
             {earned.length}/{ACHIEVEMENTS.length}
           </span>
         </div>
@@ -95,14 +131,14 @@ export function Profile() {
                 <div
                   className={`rounded-2xl p-3 text-center border-b-2 transition-colors ${
                     isEarned
-                      ? 'bg-white border-black/5'
-                      : 'bg-ink/5 border-ink/5'
+                      ? 'bg-card border-line/5'
+                      : 'bg-fg/5 border-line/5'
                   }`}
                   title={a.description}
                 >
                   <div
                     className={`w-10 h-10 mx-auto rounded-xl flex items-center justify-center mb-1.5 ${
-                      isEarned ? `bg-ink/5 ${a.color}` : 'text-ink/30'
+                      isEarned ? `bg-fg/5 ${a.color}` : 'text-fg/30'
                     }`}
                   >
                     {isEarned ? (
@@ -113,14 +149,14 @@ export function Profile() {
                   </div>
                   <div
                     className={`text-[11px] font-extrabold leading-tight ${
-                      isEarned ? 'text-ink' : 'text-ink/40'
+                      isEarned ? 'text-fg' : 'text-fg/40'
                     }`}
                   >
                     {a.name}
                   </div>
                   <div
                     className={`text-[10px] mt-0.5 leading-tight ${
-                      isEarned ? 'text-ink/50' : 'text-ink/30'
+                      isEarned ? 'text-fg/50' : 'text-fg/30'
                     }`}
                   >
                     {a.description}
@@ -132,6 +168,88 @@ export function Profile() {
         </motion.div>
       </section>
 
+      <section className="mb-6">
+        <h2 className="text-sm font-extrabold tracking-tight uppercase mb-2 px-1">
+          Theme
+        </h2>
+        <div className="grid grid-cols-4 gap-2">
+          {THEMES.map((t) => {
+            const isActive = theme === t.id
+            return (
+              <button
+                key={t.id}
+                onClick={() => setTheme(t.id)}
+                className={`relative aspect-square rounded-2xl border-2 transition-colors ${t.preview} ${
+                  isActive
+                    ? 'ring-2 ring-primary ring-offset-2 ring-offset-canvas'
+                    : ''
+                }`}
+                aria-label={`${t.name} theme`}
+              >
+                {isActive && (
+                  <div className="absolute top-1 right-1 w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center">
+                    <Check size={12} strokeWidth={3.5} />
+                  </div>
+                )}
+              </button>
+            )
+          })}
+        </div>
+        <div className="grid grid-cols-4 gap-2 mt-1.5">
+          {THEMES.map((t) => (
+            <div
+              key={t.id}
+              className={`text-[10px] uppercase tracking-wider font-bold text-center ${
+                theme === t.id ? 'text-primary' : 'text-fg/40'
+              }`}
+            >
+              {t.name}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-6">
+        <h2 className="text-sm font-extrabold tracking-tight uppercase mb-2 px-1">
+          Settings
+        </h2>
+        <button
+          onClick={toggleSound}
+          className="w-full flex items-center justify-between bg-card rounded-2xl px-4 py-3 border-b-2 border-line/5"
+        >
+          <div className="flex items-center gap-3">
+            <div
+              className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+                soundEnabled ? 'bg-primary text-white' : 'bg-fg/10 text-fg/50'
+              }`}
+            >
+              {soundEnabled ? (
+                <Volume2 size={18} strokeWidth={2.5} />
+              ) : (
+                <VolumeX size={18} strokeWidth={2.5} />
+              )}
+            </div>
+            <div className="text-left">
+              <div className="font-extrabold text-sm">Sound</div>
+              <div className="text-[11px] text-fg/50">
+                Tap feedback and chime
+              </div>
+            </div>
+          </div>
+          <div
+            className={`w-11 h-6 rounded-full p-0.5 transition-colors ${
+              soundEnabled ? 'bg-primary' : 'bg-fg/15'
+            }`}
+          >
+            <motion.div
+              className="w-5 h-5 rounded-full bg-card shadow"
+              animate={{ x: soundEnabled ? 20 : 0 }}
+              transition={{ type: 'spring', stiffness: 480, damping: 30 }}
+            />
+          </div>
+        </button>
+      </section>
+
       <section>
         {confirmReset ? (
           <Card className="border-wrong/30">
@@ -141,7 +259,7 @@ export function Profile() {
             <div className="flex gap-2">
               <button
                 onClick={() => setConfirmReset(false)}
-                className="flex-1 py-2 rounded-xl bg-ink/5 text-ink/70 font-bold text-sm"
+                className="flex-1 py-2 rounded-xl bg-fg/5 text-fg/70 font-bold text-sm"
               >
                 Cancel
               </button>
@@ -160,7 +278,7 @@ export function Profile() {
           <div className="flex justify-center">
             <button
               onClick={() => setConfirmReset(true)}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink/40 hover:text-wrong transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-fg/40 hover:text-wrong transition-colors"
             >
               <RotateCcw size={12} strokeWidth={2.5} />
               Reset progress

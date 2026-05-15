@@ -88,10 +88,10 @@ export function WaterfallVisualizer({ onFinish }: WaterfallVisualizerProps) {
 
   return (
     <div className="space-y-5">
-      <div className="bg-white rounded-2xl p-5 border-b-2 border-black/5 space-y-4">
+      <div className="bg-card rounded-2xl p-5 border-b-2 border-line/5 space-y-4">
         <div>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs uppercase tracking-wider font-bold text-ink/50">
+            <span className="text-xs uppercase tracking-wider font-bold text-fg/50">
               Pool size
             </span>
             <span className="text-base font-extrabold tabular-nums">
@@ -114,7 +114,7 @@ export function WaterfallVisualizer({ onFinish }: WaterfallVisualizerProps) {
         </div>
         <div>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs uppercase tracking-wider font-bold text-ink/50">
+            <span className="text-xs uppercase tracking-wider font-bold text-fg/50">
               Default rate
             </span>
             <span className="text-base font-extrabold tabular-nums">
@@ -137,8 +137,8 @@ export function WaterfallVisualizer({ onFinish }: WaterfallVisualizerProps) {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl p-4 border-b-2 border-black/5">
-        <div className="flex items-center gap-2 mb-3 text-xs uppercase tracking-wider font-bold text-ink/50">
+      <div className="bg-card rounded-2xl p-4 border-b-2 border-line/5">
+        <div className="flex items-center gap-2 mb-3 text-xs uppercase tracking-wider font-bold text-fg/50">
           <Droplet size={12} strokeWidth={2.5} />
           Cash from pool: ${Math.round(pool * (1 - defaultRate))}M
           <span className="text-wrong">
@@ -150,7 +150,7 @@ export function WaterfallVisualizer({ onFinish }: WaterfallVisualizerProps) {
             <div key={`${t.id}-${runId}`}>
               <div className="flex items-center justify-between mb-1">
                 <div className="text-sm font-extrabold">{t.label}</div>
-                <div className="text-xs font-bold tabular-nums text-ink/50">
+                <div className="text-xs font-bold tabular-nums text-fg/50">
                   ${Math.round(t.payout)}M / ${Math.round(t.notional)}M
                   <span
                     className={`ml-2 ${t.paid >= 1 ? 'text-primary' : t.paid > 0 ? 'text-xp' : 'text-wrong'}`}
@@ -159,7 +159,7 @@ export function WaterfallVisualizer({ onFinish }: WaterfallVisualizerProps) {
                   </span>
                 </div>
               </div>
-              <div className="h-9 bg-ink/10 rounded-xl overflow-hidden relative">
+              <div className="h-9 bg-fg/10 rounded-xl overflow-hidden relative">
                 <motion.div
                   className="h-full rounded-xl"
                   style={{ background: t.color }}

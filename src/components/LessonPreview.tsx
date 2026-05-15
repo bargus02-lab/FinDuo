@@ -24,7 +24,7 @@ export function LessonPreview({
         exit={{ opacity: 0 }}
         transition={{ duration: 0.18 }}
         onClick={onClose}
-        className="fixed inset-0 bg-ink/40 z-40"
+        className="fixed inset-0 bg-fg/40 z-40"
       />
       <motion.div
         role="dialog"
@@ -33,9 +33,9 @@ export function LessonPreview({
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', stiffness: 320, damping: 32 }}
-        className="fixed bottom-0 inset-x-0 z-50 mx-auto max-w-md bg-white dark:bg-ink rounded-t-3xl p-6 pb-8 shadow-2xl"
+        className="fixed bottom-0 inset-x-0 z-50 mx-auto max-w-md bg-card rounded-t-3xl p-6 pb-8 shadow-2xl"
       >
-        <div className="w-10 h-1.5 rounded-full bg-ink/10 mx-auto mb-4" />
+        <div className="w-10 h-1.5 rounded-full bg-fg/10 mx-auto mb-4" />
 
         <div className="flex items-start gap-3 mb-3">
           <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -55,7 +55,7 @@ export function LessonPreview({
           </div>
         </div>
 
-        <p className="text-sm text-ink/60 mb-6 leading-relaxed">
+        <p className="text-sm text-fg/60 mb-6 leading-relaxed">
           {lesson.description}
         </p>
 

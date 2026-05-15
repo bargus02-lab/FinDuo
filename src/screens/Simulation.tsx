@@ -52,12 +52,12 @@ export function SimulationScreen({
         <button
           onClick={onExit}
           aria-label="Exit simulation"
-          className="w-9 h-9 rounded-xl bg-white border border-ink/10 flex items-center justify-center text-ink/50 hover:text-ink hover:border-ink/30 transition-colors"
+          className="w-9 h-9 rounded-xl bg-card border border-line/10 flex items-center justify-center text-fg/50 hover:text-fg hover:border-line/30 transition-colors"
         >
           <X size={18} strokeWidth={3} />
         </button>
         <div className="flex-1">
-          <div className="text-[11px] uppercase tracking-wider font-bold text-ink/40">
+          <div className="text-[11px] uppercase tracking-wider font-bold text-fg/40">
             Simulation
           </div>
           <h1 className="text-base font-extrabold tracking-tight leading-tight">

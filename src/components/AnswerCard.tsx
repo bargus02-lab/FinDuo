@@ -22,21 +22,21 @@ const baseRow =
   'w-full flex items-center gap-3 text-left px-4 py-3.5 rounded-2xl border-2 transition-colors select-none'
 
 const stateClass: Record<AnswerState, string> = {
-  idle: 'bg-white border-ink/10 hover:border-ink/30 text-ink',
-  selected: 'bg-primary/10 border-primary text-ink',
+  idle: 'bg-card border-line/10 hover:border-line/30 text-fg',
+  selected: 'bg-primary/10 border-primary text-fg',
   'correct-pick': 'bg-primary border-primary text-white',
   'wrong-pick': 'bg-wrong border-wrong text-white',
-  'revealed-correct': 'bg-primary/15 border-primary text-ink',
-  dimmed: 'bg-white border-ink/10 text-ink/40',
+  'revealed-correct': 'bg-primary/15 border-primary text-fg',
+  dimmed: 'bg-card border-line/10 text-fg/40',
 }
 
 const letterClass: Record<AnswerState, string> = {
-  idle: 'bg-ink/5 text-ink/60 border border-ink/10',
-  selected: 'bg-white text-primary border border-primary',
-  'correct-pick': 'bg-white/20 text-white border border-white/30',
-  'wrong-pick': 'bg-white/20 text-white border border-white/30',
-  'revealed-correct': 'bg-white text-primary border border-primary',
-  dimmed: 'bg-ink/5 text-ink/30 border border-ink/5',
+  idle: 'bg-fg/5 text-fg/60 border border-line/10',
+  selected: 'bg-card text-primary border border-primary',
+  'correct-pick': 'bg-card/20 text-white border border-white/30',
+  'wrong-pick': 'bg-card/20 text-white border border-white/30',
+  'revealed-correct': 'bg-card text-primary border border-primary',
+  dimmed: 'bg-fg/5 text-fg/30 border border-line/5',
 }
 
 export function AnswerCard({

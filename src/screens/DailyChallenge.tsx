@@ -9,6 +9,7 @@ import {
 } from '../components/LessonComplete'
 import { getDailyQuestion } from '../data/dailyChallenges'
 import { fadeUp } from '../lib/animations'
+import { sound } from '../lib/sound'
 import { useGameStore } from '../store/useGameStore'
 
 const CORRECT_KUDOS = ['Sharp!', 'Nice!', 'On the money!', 'Yes!']
@@ -46,7 +47,10 @@ export function DailyChallengeScreen({
 
   const handleCheck = () => {
     if (selected === null || resolved) return
-    setResolved(selected === question.correctIndex ? 'correct' : 'wrong')
+    const isCorrect = selected === question.correctIndex
+    setResolved(isCorrect ? 'correct' : 'wrong')
+    if (isCorrect) sound.correct()
+    else sound.wrong()
   }
 
   const handleContinue = () => {
@@ -61,6 +65,7 @@ export function DailyChallengeScreen({
     })
     state.completeDailyChallenge(xpToAward)
     setPhase('complete')
+    sound.complete()
   }
 
   const cardState = (i: number): AnswerState => {
@@ -92,7 +97,7 @@ export function DailyChallengeScreen({
         <button
           onClick={onExit}
           aria-label="Exit daily challenge"
-          className="w-9 h-9 rounded-xl bg-white border border-ink/10 flex items-center justify-center text-ink/50 hover:text-ink hover:border-ink/30 transition-colors"
+          className="w-9 h-9 rounded-xl bg-card border border-line/10 flex items-center justify-center text-fg/50 hover:text-fg hover:border-line/30 transition-colors"
         >
           <X size={18} strokeWidth={3} />
         </button>
@@ -141,7 +146,7 @@ export function DailyChallengeScreen({
             }`}
           >
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-full bg-card/20 flex items-center justify-center">
                 {resolved === 'correct' ? (
                   <Check size={20} strokeWidth={3.5} />
                 ) : (
@@ -175,7 +180,7 @@ export function DailyChallengeScreen({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 80, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-0 inset-x-0 z-30 max-w-md mx-auto px-5 pt-4 pb-6 bg-gradient-to-t from-cream via-cream to-transparent"
+            className="fixed bottom-0 inset-x-0 z-30 max-w-md mx-auto px-5 pt-4 pb-6 bg-gradient-to-t from-canvas via-canvas to-transparent"
           >
             <Button
               variant="primary"

@@ -22,9 +22,9 @@ const variants: Record<
     shadowColor: '#46A302',
   },
   secondary: {
-    bg: 'bg-white',
-    text: 'text-ink',
-    hover: 'hover:bg-ink/5',
+    bg: 'bg-card',
+    text: 'text-fg',
+    hover: 'hover:bg-fg/5',
     shadowColor: 'rgba(15,23,41,0.18)',
   },
   danger: {
@@ -35,8 +35,8 @@ const variants: Record<
   },
   ghost: {
     bg: 'bg-transparent',
-    text: 'text-ink',
-    hover: 'hover:bg-ink/5',
+    text: 'text-fg',
+    hover: 'hover:bg-fg/5',
     shadowColor: 'transparent',
   },
 }

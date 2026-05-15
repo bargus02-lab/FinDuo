@@ -104,8 +104,8 @@ export function BudgetAllocator({ onFinish }: BudgetAllocatorProps) {
 
   return (
     <div className="space-y-5">
-      <div className="bg-white rounded-2xl p-5 border-b-2 border-black/5">
-        <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-ink/50 mb-1">
+      <div className="bg-card rounded-2xl p-5 border-b-2 border-line/5">
+        <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-fg/50 mb-1">
           <span>Monthly take-home</span>
           <span>Allocated</span>
         </div>
@@ -119,18 +119,18 @@ export function BudgetAllocator({ onFinish }: BudgetAllocatorProps) {
                 ? 'text-primary'
                 : total > 100
                   ? 'text-wrong'
-                  : 'text-ink/40'
+                  : 'text-fg/40'
             }`}
           >
             {total}%
           </div>
         </div>
 
-        <div className="text-xs uppercase tracking-wider font-bold text-ink/50 mb-1">
+        <div className="text-xs uppercase tracking-wider font-bold text-fg/50 mb-1">
           Financial health
         </div>
         <div className="flex items-center gap-3 mb-1">
-          <div className="flex-1 h-3 bg-ink/10 rounded-full overflow-hidden">
+          <div className="flex-1 h-3 bg-fg/10 rounded-full overflow-hidden">
             <motion.div
               className={`h-full ${
                 health >= 60
@@ -157,7 +157,7 @@ export function BudgetAllocator({ onFinish }: BudgetAllocatorProps) {
           return (
             <div
               key={b.id}
-              className="bg-white rounded-2xl p-4 border-b-2 border-black/5"
+              className="bg-card rounded-2xl p-4 border-b-2 border-line/5"
             >
               <div className="flex items-center gap-3 mb-2">
                 <div
@@ -167,13 +167,13 @@ export function BudgetAllocator({ onFinish }: BudgetAllocatorProps) {
                 </div>
                 <div className="flex-1">
                   <div className="font-extrabold text-sm">{b.label}</div>
-                  <div className="text-[11px] text-ink/50">{b.guidance}</div>
+                  <div className="text-[11px] text-fg/50">{b.guidance}</div>
                 </div>
                 <div className="text-right">
                   <div className="font-extrabold tabular-nums text-base">
                     {value}%
                   </div>
-                  <div className="text-[11px] text-ink/50 tabular-nums">
+                  <div className="text-[11px] text-fg/50 tabular-nums">
                     ${dollars.toLocaleString()}
                   </div>
                 </div>

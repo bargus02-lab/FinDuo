@@ -20,6 +20,11 @@ export default {
         },
         cream: '#FFFBF5',
         ink: '#0F1729',
+        // Theme-aware semantic colors (driven by CSS variables)
+        canvas: 'rgb(var(--canvas) / <alpha-value>)',
+        card: 'rgb(var(--card) / <alpha-value>)',
+        fg: 'rgb(var(--fg) / <alpha-value>)',
+        line: 'rgb(var(--line) / <alpha-value>)',
       },
       fontFamily: {
         sans: [
