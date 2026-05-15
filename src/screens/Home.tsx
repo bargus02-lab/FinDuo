@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { Flame, Zap } from 'lucide-react'
 import { useState } from 'react'
+import { DailyChallengeCard } from '../components/DailyChallengeCard'
 import { LessonPath } from '../components/LessonPath'
 import { LessonPreview } from '../components/LessonPreview'
 import { PageShell } from '../components/PageShell'
@@ -37,9 +38,10 @@ function ParallaxBackdrop() {
 
 interface HomeProps {
   onStartLesson: (lessonId: string) => void
+  onStartDaily: () => void
 }
 
-export function Home({ onStartLesson }: HomeProps) {
+export function Home({ onStartLesson, onStartDaily }: HomeProps) {
   const xp = useGameStore((s) => s.xp)
   const streak = useGameStore((s) => s.streak)
   const currentTrack = useGameStore((s) => s.currentTrack)
@@ -78,6 +80,15 @@ export function Home({ onStartLesson }: HomeProps) {
           </div>
         </motion.header>
 
+        <motion.div
+          variants={fadeUp}
+          initial="initial"
+          animate="in"
+          className="mb-3"
+        >
+          <DailyChallengeCard onStart={onStartDaily} />
+        </motion.div>
+
         <motion.nav
           variants={fadeUp}
           initial="initial"
@@ -103,7 +114,7 @@ export function Home({ onStartLesson }: HomeProps) {
         <LessonPath lessons={lessons} onLessonTap={setSelected} />
 
         <p className="text-xs text-ink/40 mt-12 text-center">
-          Step 6 of 12 · multiple choice with full answer-feedback animations
+          Step 9 of 12 · daily challenge live
         </p>
       </PageShell>
 

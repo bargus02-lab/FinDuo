@@ -4,6 +4,7 @@ import { AnimatedNumber } from './AnimatedNumber'
 import { BigCheck } from './BigCheck'
 import { Button } from './Button'
 import { ConfettiBurst } from './ConfettiBurst'
+import { cn } from '../lib/cn'
 
 export interface CompleteSnapshot {
   xpBefore: number
@@ -95,22 +96,28 @@ export function LessonComplete({
           </div>
         </div>
         <div
-          className={`rounded-2xl p-4 border-b-2 text-center ${
-            streakBumped ? 'bg-xp/15 border-xp/30' : 'bg-white border-black/5'
-          }`}
+          className={cn(
+            'rounded-2xl p-4 border-b-2 text-center relative overflow-hidden',
+            streakBumped ? 'bg-xp/15 border-xp/30' : 'bg-white border-black/5',
+          )}
         >
+          {streakBumped && (
+            <div className="absolute inset-0 pointer-events-none">
+              <ConfettiBurst count={22} spread={90} duration={1.1} />
+            </div>
+          )}
           <motion.div
             animate={
               streakBumped
-                ? { rotate: [-8, 8, -4, 0], scale: [1, 1.2, 1] }
+                ? { rotate: [-8, 8, -4, 0], scale: [1, 1.3, 1] }
                 : undefined
             }
             transition={{ duration: 0.6, delay: 0.7 }}
-            className="inline-block"
+            className="inline-block relative"
           >
             <Flame className="w-5 h-5 mx-auto mb-1 text-xp" strokeWidth={2.5} />
           </motion.div>
-          <div className="text-2xl font-extrabold tabular-nums text-xp">
+          <div className="text-2xl font-extrabold tabular-nums text-xp relative">
             <AnimatedNumber
               from={snapshot.streakBefore}
               to={streakAfter}
@@ -118,7 +125,7 @@ export function LessonComplete({
               duration={0.8}
             />
           </div>
-          <div className="text-[10px] uppercase tracking-wider font-bold text-ink/50">
+          <div className="text-[10px] uppercase tracking-wider font-bold text-ink/50 relative">
             Day streak
           </div>
         </div>
