@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
-import { Calendar, Check, Clock, Sparkles } from 'lucide-react'
+import { Check, Clock, Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import {
   formatTimeRemaining,
   secondsToMidnight,
 } from '../data/dailyChallenges'
 import { useDailyChallengeAvailable } from '../store/useGameStore'
+import { Mascot } from './Mascot'
 
 interface DailyChallengeCardProps {
   onStart: () => void
@@ -52,9 +53,9 @@ export function DailyChallengeCard({ onStart }: DailyChallengeCardProps) {
       whileTap={{ scale: 0.98 }}
       className="w-full text-left rounded-2xl p-3 bg-gradient-to-br from-primary to-[#46A302] text-white border-b-2 border-[#3A8902]"
     >
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-card/15 flex items-center justify-center">
-          <Calendar size={20} strokeWidth={2.5} />
+      <div className="flex items-center gap-2">
+        <div className="shrink-0 -my-1">
+          <Mascot mood="wave" size={48} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">

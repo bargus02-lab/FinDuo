@@ -1,9 +1,10 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
-import { Flame, Sparkles, Zap } from 'lucide-react'
+import { Flame, Zap } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { DailyChallengeCard } from '../components/DailyChallengeCard'
 import { LessonPath } from '../components/LessonPath'
 import { LessonPreview } from '../components/LessonPreview'
+import { Mascot } from '../components/Mascot'
 import { PageShell } from '../components/PageShell'
 import { fadeUp } from '../lib/animations'
 import { lessonsForTrack, type Lesson } from '../data/lessons'
@@ -96,17 +97,17 @@ export function Home({ onStartLesson, onStartDaily }: HomeProps) {
             variants={fadeUp}
             initial="initial"
             animate="in"
-            className="mb-3 rounded-2xl p-4 bg-card border-b-2 border-line/5 flex items-center gap-3"
+            className="mb-3 rounded-2xl p-3 bg-card border-b-2 border-line/5 flex items-center gap-3"
           >
-            <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-              <Sparkles size={20} strokeWidth={2.5} />
+            <div className="shrink-0">
+              <Mascot mood="wave" size={64} />
             </div>
             <div>
               <div className="text-sm font-extrabold tracking-tight">
-                {hello}
+                {hello}!
               </div>
               <div className="text-[12px] text-fg/60 leading-snug">
-                Start with the first lesson below, or jump to any track.
+                I’m Pip. Pick a track and tap the first lesson — I’ll be right there.
               </div>
             </div>
           </motion.div>

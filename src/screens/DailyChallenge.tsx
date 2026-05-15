@@ -1,13 +1,16 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, X } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AnswerCard, type AnswerState } from '../components/AnswerCard'
 import { Button } from '../components/Button'
 import {
   LessonComplete,
   type CompleteSnapshot,
 } from '../components/LessonComplete'
+import { type MascotMood } from '../components/Mascot'
+import { MascotMoment } from '../components/MascotMoment'
 import { getDailyQuestion } from '../data/dailyChallenges'
+import { pickLine } from '../data/mascotLines'
 import { fadeUp } from '../lib/animations'
 import { sound } from '../lib/sound'
 import { useGameStore } from '../store/useGameStore'
@@ -40,10 +43,31 @@ export function DailyChallengeScreen({
   const [snapshot, setSnapshot] = useState<CompleteSnapshot | null>(null)
   const [earned, setEarned] = useState(0)
 
+  const [mascotMood, setMascotMood] = useState<MascotMood>('wave')
+  const [mascotLine, setMascotLine] = useState<string>(() => pickLine('daily'))
+
   const kudos = useMemo(
     () => (resolved === 'correct' ? pick(CORRECT_KUDOS) : pick(WRONG_KINDS)),
     [resolved],
   )
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setMascotMood('idle')
+      setMascotLine(pickLine('thinking'))
+    }, 2000)
+    return () => clearTimeout(t)
+  }, [])
+
+  useEffect(() => {
+    if (resolved === 'correct') {
+      setMascotMood('correct')
+      setMascotLine(pickLine('correct'))
+    } else if (resolved === 'wrong') {
+      setMascotMood('wrong')
+      setMascotLine(pickLine('wrong'))
+    }
+  }, [resolved])
 
   const handleCheck = () => {
     if (selected === null || resolved) return
@@ -113,9 +137,23 @@ export function DailyChallengeScreen({
 
       <main className="flex-1 px-5 max-w-md mx-auto w-full pb-48">
         <motion.div variants={fadeUp} initial="initial" animate="in">
-          <h1 className="text-xl font-extrabold tracking-tight leading-snug mb-6 mt-4">
+          <h1 className="text-xl font-extrabold tracking-tight leading-snug mb-4 mt-4">
             {question.prompt}
           </h1>
+          <div className="mb-3">
+            <MascotMoment
+              mood={mascotMood}
+              line={mascotLine}
+              tone={
+                resolved === 'correct'
+                  ? 'correct'
+                  : resolved === 'wrong'
+                    ? 'wrong'
+                    : 'neutral'
+              }
+              size={72}
+            />
+          </div>
           <div className="space-y-2.5">
             {question.choices.map((choice, i) => (
               <AnswerCard

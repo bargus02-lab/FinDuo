@@ -1,9 +1,13 @@
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Flame, Zap } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { AnimatedNumber } from './AnimatedNumber'
 import { BigCheck } from './BigCheck'
 import { Button } from './Button'
 import { ConfettiBurst } from './ConfettiBurst'
+import { Mascot } from './Mascot'
+import { MascotBubble } from './MascotBubble'
+import { pickLine } from '../data/mascotLines'
 import { cn } from '../lib/cn'
 
 export interface CompleteSnapshot {
@@ -37,6 +41,12 @@ export function LessonComplete({
     snapshot.score === snapshot.total
   const computedHeadline =
     headline ?? (isPerfect ? 'Perfect!' : 'Lesson complete')
+  const [mascotLine] = useState(() => pickLine('complete'))
+  const [showBubble, setShowBubble] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setShowBubble(true), 750)
+    return () => clearTimeout(t)
+  }, [])
 
   return (
     <div className="min-h-full flex flex-col items-center justify-center px-6 py-12 relative max-w-md mx-auto">
@@ -49,6 +59,31 @@ export function LessonComplete({
         >
           <BigCheck size={140} />
         </motion.div>
+        <motion.div
+          initial={{ scale: 0, opacity: 0, x: -10, y: 20 }}
+          animate={{ scale: 1, opacity: 1, x: 0, y: 0 }}
+          transition={{
+            type: 'spring',
+            stiffness: 220,
+            damping: 16,
+            delay: 0.4,
+          }}
+          className="absolute -bottom-3 -right-14"
+        >
+          <Mascot mood="celebrate" size={88} />
+        </motion.div>
+        <div className="absolute -top-4 -left-4">
+          <AnimatePresence>
+            {showBubble && (
+              <MascotBubble
+                key={mascotLine}
+                text={mascotLine}
+                side="left"
+                tone="neutral"
+              />
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       <motion.h1

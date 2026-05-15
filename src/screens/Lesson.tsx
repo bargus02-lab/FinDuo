@@ -1,15 +1,18 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, X } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { AnswerCard, type AnswerState } from '../components/AnswerCard'
 import { Button } from '../components/Button'
 import {
   LessonComplete,
   type CompleteSnapshot,
 } from '../components/LessonComplete'
+import { type MascotMood } from '../components/Mascot'
+import { MascotMoment } from '../components/MascotMoment'
 import { PageShell } from '../components/PageShell'
 import { ProgressBar } from '../components/ProgressBar'
 import type { Lesson } from '../data/lessons'
+import { pickLine } from '../data/mascotLines'
 import { fadeUp } from '../lib/animations'
 import { sound } from '../lib/sound'
 import { useGameStore } from '../store/useGameStore'
@@ -39,6 +42,10 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
   const [score, setScore] = useState(0)
   const [snapshot, setSnapshot] = useState<CompleteSnapshot | null>(null)
 
+  // Mascot — wave on entry, idle/thinking while picking, react on Check.
+  const [mascotMood, setMascotMood] = useState<MascotMood>('wave')
+  const [mascotLine, setMascotLine] = useState<string>(() => pickLine('start'))
+
   const question = questions[index]
   const total = questions.length
   const isLast = index === total - 1
@@ -47,6 +54,51 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
     () => (resolved === 'correct' ? pick(CORRECT_KUDOS) : pick(WRONG_KINDS)),
     [resolved, index],
   )
+
+  // Wave on mount → settle into thinking after ~2s.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setMascotMood('idle')
+      setMascotLine(pickLine('thinking'))
+    }, 2200)
+    return () => clearTimeout(t)
+  }, [])
+
+  // Rotate thinking lines every ~7s while idle.
+  useEffect(() => {
+    if (mascotMood !== 'idle') return
+    const t = setInterval(() => {
+      setMascotLine(pickLine('thinking'))
+    }, 7000)
+    return () => clearInterval(t)
+  }, [mascotMood])
+
+  // React to user selecting an answer (lean in).
+  useEffect(() => {
+    if (resolved !== null) return
+    if (selected !== null && mascotMood !== 'thinking') {
+      setMascotMood('thinking')
+    }
+  }, [selected, resolved, mascotMood])
+
+  // React to Check outcome.
+  useEffect(() => {
+    if (resolved === 'correct') {
+      setMascotMood('correct')
+      setMascotLine(pickLine('correct'))
+    } else if (resolved === 'wrong') {
+      setMascotMood('wrong')
+      setMascotLine(pickLine('wrong'))
+    }
+  }, [resolved])
+
+  // Reset mascot on next question.
+  useEffect(() => {
+    if (resolved === null) {
+      setMascotMood('idle')
+      setMascotLine(pickLine('thinking'))
+    }
+  }, [index])
 
   if (!question) {
     return (
@@ -114,6 +166,13 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
     )
   }
 
+  const bubbleTone: 'neutral' | 'correct' | 'wrong' =
+    resolved === 'correct'
+      ? 'correct'
+      : resolved === 'wrong'
+        ? 'wrong'
+        : 'neutral'
+
   return (
     <div className="min-h-full flex flex-col">
       <header className="px-5 pt-4 pb-3 flex items-center gap-3 max-w-md mx-auto w-full">
@@ -137,9 +196,18 @@ export function LessonScreen({ lesson, onComplete, onExit }: LessonScreenProps) 
           <div className="text-[11px] uppercase tracking-wider font-bold text-fg/40 mb-2 mt-2">
             Question {index + 1} of {total}
           </div>
-          <h1 className="text-xl font-extrabold tracking-tight leading-snug mb-6">
+          <h1 className="text-xl font-extrabold tracking-tight leading-snug mb-4">
             {question.prompt}
           </h1>
+
+          <div className="mb-3">
+            <MascotMoment
+              mood={mascotMood}
+              line={mascotLine}
+              tone={bubbleTone}
+              size={72}
+            />
+          </div>
 
           <div className="space-y-2.5">
             {question.choices.map((choice, i) => (
