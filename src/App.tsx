@@ -2,29 +2,18 @@ import { useState } from 'react'
 import { getLessonById } from './data/lessons'
 import { Home } from './screens/Home'
 import { LessonScreen } from './screens/Lesson'
-import { useGameStore } from './store/useGameStore'
+import { SimulationScreen } from './screens/Simulation'
 
 function App() {
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null)
-  const completeLesson = useGameStore((s) => s.completeLesson)
 
   const handleStartLesson = (id: string) => {
-    const lesson = getLessonById(id)
-    if (!lesson) return
-    if (lesson.type === 'multiple-choice') {
-      setActiveLessonId(id)
-    } else {
-      // Simulations land in step 8. For now, tapping Start on a sim just
-      // marks it complete so the path progresses.
-      completeLesson(lesson.id, lesson.xp)
-    }
+    setActiveLessonId(id)
   }
 
   if (activeLessonId) {
     const lesson = getLessonById(activeLessonId)
-    if (lesson && lesson.type === 'multiple-choice') {
-      // LessonScreen now owns the store mutation so the complete-phase
-      // animations have a snapshot to roll up from.
+    if (lesson?.type === 'multiple-choice') {
       return (
         <LessonScreen
           lesson={lesson}
@@ -33,7 +22,15 @@ function App() {
         />
       )
     }
-    // Fall through to Home if something is off
+    if (lesson?.type === 'simulation') {
+      return (
+        <SimulationScreen
+          lesson={lesson}
+          onComplete={() => setActiveLessonId(null)}
+          onExit={() => setActiveLessonId(null)}
+        />
+      )
+    }
   }
 
   return <Home onStartLesson={handleStartLesson} />
