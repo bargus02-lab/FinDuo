@@ -20,6 +20,7 @@ interface PersistedState {
   currentTrack: Track
   theme: Theme
   soundEnabled: boolean
+  firstSeenAt: string | null
 }
 
 interface GameStore extends PersistedState {
@@ -42,6 +43,7 @@ const initialState: PersistedState = {
   currentTrack: 'money',
   theme: 'light',
   soundEnabled: true,
+  firstSeenAt: null,
 }
 
 export function todayISO(date = new Date()): string {
@@ -75,6 +77,7 @@ export const useGameStore = create<GameStore>()(
           xp: s.xp + xpEarned,
           streak: nextStreak(s.lastCompletedDate, s.streak),
           lastCompletedDate: todayISO(),
+          firstSeenAt: s.firstSeenAt ?? todayISO(),
         })),
 
       completeDailyChallenge: (xpEarned) =>
@@ -85,6 +88,7 @@ export const useGameStore = create<GameStore>()(
             streak: nextStreak(s.lastCompletedDate, s.streak),
             lastCompletedDate: today,
             dailyChallengeLastDate: today,
+            firstSeenAt: s.firstSeenAt ?? today,
           }
         }),
 
@@ -112,6 +116,7 @@ export const useGameStore = create<GameStore>()(
         currentTrack: s.currentTrack,
         theme: s.theme,
         soundEnabled: s.soundEnabled,
+        firstSeenAt: s.firstSeenAt,
       }),
     },
   ),

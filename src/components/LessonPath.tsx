@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
+import { Fragment } from 'react'
 import type { Lesson } from '../data/lessons'
-import { staggerChildren, fadeUp } from '../lib/animations'
+import { fadeUp, staggerChildren } from '../lib/animations'
 import { useGameStore } from '../store/useGameStore'
 import { LessonNode, type NodeState } from './LessonNode'
 
@@ -21,7 +22,7 @@ export function LessonPath({ lessons, onLessonTap }: LessonPathProps) {
       variants={staggerChildren(0.04)}
       initial="initial"
       animate="in"
-      className="flex flex-col items-center py-4 gap-7"
+      className="flex flex-col items-center py-4"
     >
       {lessons.map((lesson, i) => {
         const state: NodeState = completed[lesson.id]
@@ -30,21 +31,35 @@ export function LessonPath({ lessons, onLessonTap }: LessonPathProps) {
             ? 'current'
             : 'locked'
         const offset = ZIGZAG[i % ZIGZAG.length]
+        const isLast = i === lessons.length - 1
 
         return (
-          <motion.div
-            key={lesson.id}
-            variants={fadeUp}
-            style={{ transform: `translateX(${offset}px)` }}
-          >
-            <LessonNode
-              lesson={lesson}
-              state={state}
-              onClick={() => onLessonTap(lesson)}
-            />
-          </motion.div>
+          <Fragment key={lesson.id}>
+            <motion.div
+              variants={fadeUp}
+              style={{ transform: `translateX(${offset}px)` }}
+              className="my-3"
+            >
+              <LessonNode
+                lesson={lesson}
+                state={state}
+                onClick={() => onLessonTap(lesson)}
+              />
+            </motion.div>
+            {!isLast && <Connector />}
+          </Fragment>
         )
       })}
     </motion.div>
+  )
+}
+
+function Connector() {
+  return (
+    <div className="flex flex-col items-center gap-1 my-1" aria-hidden>
+      <div className="w-1.5 h-1.5 rounded-full bg-fg/15" />
+      <div className="w-1.5 h-1.5 rounded-full bg-fg/15" />
+      <div className="w-1.5 h-1.5 rounded-full bg-fg/15" />
+    </div>
   )
 }

@@ -1,13 +1,13 @@
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
-import { Flame, Zap } from 'lucide-react'
-import { useState } from 'react'
+import { Flame, Sparkles, Zap } from 'lucide-react'
+import { useMemo, useState } from 'react'
 import { DailyChallengeCard } from '../components/DailyChallengeCard'
 import { LessonPath } from '../components/LessonPath'
 import { LessonPreview } from '../components/LessonPreview'
 import { PageShell } from '../components/PageShell'
 import { fadeUp } from '../lib/animations'
 import { lessonsForTrack, type Lesson } from '../data/lessons'
-import { TRACKS, useGameStore } from '../store/useGameStore'
+import { TRACKS, useCompletedCount, useGameStore } from '../store/useGameStore'
 
 function ParallaxBackdrop() {
   const { scrollY } = useScroll()
@@ -36,6 +36,14 @@ function ParallaxBackdrop() {
   )
 }
 
+function greeting(date = new Date()): string {
+  const h = date.getHours()
+  if (h < 5) return 'Up late'
+  if (h < 12) return 'Good morning'
+  if (h < 18) return 'Good afternoon'
+  return 'Good evening'
+}
+
 interface HomeProps {
   onStartLesson: (lessonId: string) => void
   onStartDaily: () => void
@@ -47,9 +55,12 @@ export function Home({ onStartLesson, onStartDaily }: HomeProps) {
   const currentTrack = useGameStore((s) => s.currentTrack)
   const setTrack = useGameStore((s) => s.setTrack)
   const completed = useGameStore((s) => s.completedLessons)
+  const completedCount = useCompletedCount()
 
   const [selected, setSelected] = useState<Lesson | null>(null)
   const lessons = lessonsForTrack(currentTrack)
+  const hello = useMemo(() => greeting(), [])
+  const isNewUser = completedCount === 0
 
   const handleStart = () => {
     if (!selected) return
@@ -80,14 +91,35 @@ export function Home({ onStartLesson, onStartDaily }: HomeProps) {
           </div>
         </motion.header>
 
-        <motion.div
-          variants={fadeUp}
-          initial="initial"
-          animate="in"
-          className="mb-3"
-        >
-          <DailyChallengeCard onStart={onStartDaily} />
-        </motion.div>
+        {isNewUser ? (
+          <motion.div
+            variants={fadeUp}
+            initial="initial"
+            animate="in"
+            className="mb-3 rounded-2xl p-4 bg-card border-b-2 border-line/5 flex items-center gap-3"
+          >
+            <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+              <Sparkles size={20} strokeWidth={2.5} />
+            </div>
+            <div>
+              <div className="text-sm font-extrabold tracking-tight">
+                {hello}
+              </div>
+              <div className="text-[12px] text-fg/60 leading-snug">
+                Start with the first lesson below, or jump to any track.
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            variants={fadeUp}
+            initial="initial"
+            animate="in"
+            className="mb-3"
+          >
+            <DailyChallengeCard onStart={onStartDaily} />
+          </motion.div>
+        )}
 
         <motion.nav
           variants={fadeUp}
@@ -112,10 +144,6 @@ export function Home({ onStartLesson, onStartDaily }: HomeProps) {
         </motion.nav>
 
         <LessonPath lessons={lessons} onLessonTap={setSelected} />
-
-        <p className="text-xs text-fg/40 mt-12 text-center">
-          Step 9 of 12 · daily challenge live
-        </p>
       </PageShell>
 
       <AnimatePresence>

@@ -24,7 +24,7 @@ export function LessonPreview({
         exit={{ opacity: 0 }}
         transition={{ duration: 0.18 }}
         onClick={onClose}
-        className="fixed inset-0 bg-fg/40 z-40"
+        className="fixed inset-0 bg-black/40 z-40"
       />
       <motion.div
         role="dialog"

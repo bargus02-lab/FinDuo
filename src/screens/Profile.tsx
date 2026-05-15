@@ -48,10 +48,19 @@ export function Profile() {
   )
   const theme = useGameStore((s) => s.theme)
   const soundEnabled = useGameStore((s) => s.soundEnabled)
+  const firstSeenAt = useGameStore((s) => s.firstSeenAt)
   const setTheme = useGameStore((s) => s.setTheme)
   const toggleSound = useGameStore((s) => s.toggleSound)
   const reset = useGameStore((s) => s.resetProgress)
   const lessonCount = useCompletedCount()
+
+  const memberSince = firstSeenAt
+    ? new Date(firstSeenAt).toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    : 'today'
 
   const [confirmReset, setConfirmReset] = useState(false)
 
@@ -76,7 +85,7 @@ export function Profile() {
           <UserIcon size={36} strokeWidth={2.5} />
         </div>
         <h1 className="text-2xl font-extrabold tracking-tight">You</h1>
-        <p className="text-fg/50 text-xs">Member since today</p>
+        <p className="text-fg/50 text-xs">Member since {memberSince}</p>
       </motion.header>
 
       <motion.section
