@@ -60,7 +60,7 @@ export function Home({ onStartLesson, onStartDaily }: HomeProps) {
   return (
     <>
       <ParallaxBackdrop />
-      <PageShell>
+      <PageShell className="pb-28">
         <motion.header
           variants={fadeUp}
           initial="initial"

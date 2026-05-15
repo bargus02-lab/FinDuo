@@ -1,51 +1,71 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
+import { BottomNav, type Tab } from './components/BottomNav'
 import { getLessonById } from './data/lessons'
 import { DailyChallengeScreen } from './screens/DailyChallenge'
 import { Home } from './screens/Home'
+import { Leaderboard } from './screens/Leaderboard'
 import { LessonScreen } from './screens/Lesson'
+import { Profile } from './screens/Profile'
 import { SimulationScreen } from './screens/Simulation'
 
-type Route =
-  | { kind: 'home' }
+type FullScreenRoute =
   | { kind: 'lesson'; lessonId: string }
   | { kind: 'daily' }
+  | null
 
 function App() {
-  const [route, setRoute] = useState<Route>({ kind: 'home' })
+  const [tab, setTab] = useState<Tab>('home')
+  const [full, setFull] = useState<FullScreenRoute>(null)
 
-  const handleStartLesson = (id: string) => {
-    setRoute({ kind: 'lesson', lessonId: id })
+  const goBack = () => setFull(null)
+
+  if (full?.kind === 'daily') {
+    return <DailyChallengeScreen onComplete={goBack} onExit={goBack} />
   }
 
-  const goHome = () => setRoute({ kind: 'home' })
-
-  if (route.kind === 'daily') {
-    return <DailyChallengeScreen onComplete={goHome} onExit={goHome} />
-  }
-
-  if (route.kind === 'lesson') {
-    const lesson = getLessonById(route.lessonId)
+  if (full?.kind === 'lesson') {
+    const lesson = getLessonById(full.lessonId)
     if (lesson?.type === 'multiple-choice') {
       return (
-        <LessonScreen lesson={lesson} onComplete={goHome} onExit={goHome} />
+        <LessonScreen lesson={lesson} onComplete={goBack} onExit={goBack} />
       )
     }
     if (lesson?.type === 'simulation') {
       return (
         <SimulationScreen
           lesson={lesson}
-          onComplete={goHome}
-          onExit={goHome}
+          onComplete={goBack}
+          onExit={goBack}
         />
       )
     }
   }
 
   return (
-    <Home
-      onStartLesson={handleStartLesson}
-      onStartDaily={() => setRoute({ kind: 'daily' })}
-    />
+    <>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={tab}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.18 }}
+        >
+          {tab === 'home' && (
+            <Home
+              onStartLesson={(id) =>
+                setFull({ kind: 'lesson', lessonId: id })
+              }
+              onStartDaily={() => setFull({ kind: 'daily' })}
+            />
+          )}
+          {tab === 'leaderboard' && <Leaderboard />}
+          {tab === 'profile' && <Profile />}
+        </motion.div>
+      </AnimatePresence>
+      <BottomNav active={tab} onChange={setTab} />
+    </>
   )
 }
 
