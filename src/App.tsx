@@ -20,19 +20,15 @@ function App() {
     }
   }
 
-  const handleLessonComplete = (lessonId: string) => {
-    const lesson = getLessonById(lessonId)
-    if (lesson) completeLesson(lesson.id, lesson.xp)
-    setActiveLessonId(null)
-  }
-
   if (activeLessonId) {
     const lesson = getLessonById(activeLessonId)
     if (lesson && lesson.type === 'multiple-choice') {
+      // LessonScreen now owns the store mutation so the complete-phase
+      // animations have a snapshot to roll up from.
       return (
         <LessonScreen
           lesson={lesson}
-          onComplete={() => handleLessonComplete(lesson.id)}
+          onComplete={() => setActiveLessonId(null)}
           onExit={() => setActiveLessonId(null)}
         />
       )
